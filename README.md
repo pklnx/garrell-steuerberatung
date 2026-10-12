@@ -186,10 +186,9 @@ Two dependencies worth knowing before changing the workflow:
   `metadata-action` stamps the build time into the image config and changes the manifest
   digest on every run — DIUN would then report every idle Monday rebuild until nobody reads
   its mail any more. Pinned, an unchanged rebuild is bit-identical and stays quiet.
-- GitHub disables scheduled workflows after **60 days without repository activity**, a real
-  risk on a site that can go months without an edit. With the base image unpinned, the
-  monthly Dependabot **action** updates are the only commits left to keep the schedule
-  alive.
+- GitHub disables scheduled workflows after **60 days without a commit**, a real risk on a
+  site that can go months without an edit. The `keepalive` job in `docker.yml` re-enables
+  the workflow through the API on every scheduled or manual run, which resets that clock.
 
 ## Content Security Policy
 
