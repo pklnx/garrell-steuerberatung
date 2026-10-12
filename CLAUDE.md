@@ -190,11 +190,13 @@ Two things this arrangement depends on:
   and change the manifest digest on every run, so DIUN would report every idle
   Monday rebuild. With the label pinned, an unchanged rebuild is bit-identical
   and stays quiet. Do not drop that override.
-- **GitHub disables scheduled workflows after 60 days of repository
-  inactivity** — a real risk here, since months can pass without a content
-  change. With the base image unpinned, the monthly **action** updates are the
-  only Dependabot commits left, and therefore the only thing keeping the
-  schedule alive; if Dependabot is ever removed, the schedule will quietly stop.
+- **GitHub disables scheduled workflows after 60 days without a commit** —
+  a real risk here, since months can pass without a content change, and
+  unmerged Dependabot PRs do not count. The `keepalive` job in `docker.yml`
+  re-enables the workflow through the API on every scheduled or manual run,
+  which resets that clock. It needs `actions: write`, granted to that job
+  only. Do not remove it. If the schedule ever is disabled anyway,
+  *Actions → the workflow → Enable workflow* revives it.
 - **Unprivileged by design:** runs as the `nginx` user on port **8080**,
   read-only root filesystem, all capabilities dropped, `no-new-privileges`.
   Everything writable (pid file, temp paths) lives under `/tmp`. Those temp

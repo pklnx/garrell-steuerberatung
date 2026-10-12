@@ -15,10 +15,9 @@ updates:
       - "dependencies"
 
   # The workflow's own actions (checkout, buildx, metadata, build-push) age too,
-  # and a deprecated major eventually stops running without warning. With the
-  # base image unpinned these are also the only Dependabot commits left, and so
-  # the only thing keeping GitHub from disabling the weekly rebuild after 60
-  # days of repository inactivity.
+  # and a deprecated major eventually stops running without warning. (Keeping
+  # the weekly rebuild from being disabled after 60 days without a commit is
+  # the keepalive job's task in docker.yml, not this entry's.)
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
